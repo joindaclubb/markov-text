@@ -78,18 +78,19 @@ class Entry:
         
         keys = list(self.row.keys())
         vals = list(self.row.values())
-        
-        return pickByProb(keys, [val / self.counts for val in vals])
+        return pickByProb(keys, [val * 1.0 / self.counts for val in vals])
 
 def pickByProb(elems, probs):
     assert(len(elems) == len(probs))
     p = random.random()
     for elem, prob in zip(elems, probs):
+        
         p -= prob
         if p <= 0:
+            
             return elem
 
-def generate(file, numWords, keyWord, filterOutFN):
+def generate(file, numWords, keyWord, filterOutFN = lambda x: False):
     m = MarkovText(file)
     i = 0
     buffer = ""
